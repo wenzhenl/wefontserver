@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="14F1509" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="TestAlyssaServer" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hWL-kH-jaO">
+                                <rect key="frame" x="200" y="265" width="200" height="70"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="ARw-hJ-QyV"/>
+                                    <constraint firstAttribute="height" constant="70" id="hrC-Bu-CCm"/>
+                                </constraints>
+                                <state key="normal" title="Request Data From Server"/>
+                                <connections>
+                                    <action selector="getdata" destination="BYZ-38-t0r" eventType="touchUpInside" id="HgH-44-abN"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="hWL-kH-jaO" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="5KW-ew-jeV"/>
+                            <constraint firstItem="hWL-kH-jaO" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="K2Z-8g-0Xk"/>
+                            <constraint firstItem="hWL-kH-jaO" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="Mao-Cg-VMg"/>
+                            <constraint firstItem="hWL-kH-jaO" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="UDL-F2-lmv"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="K2Z-8g-0Xk"/>
+                                <exclude reference="UDL-F2-lmv"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="button" destination="hWL-kH-jaO" id="JcN-Et-ZVd"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="380" y="337"/>
+        </scene>
+    </scenes>
+</document>
