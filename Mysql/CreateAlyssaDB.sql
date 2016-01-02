@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS `AlyssaDB`.`User` (
   `user_password` VARCHAR(45) NOT NULL,
   `user_nickname` VARCHAR(45) NOT NULL,
   `user_created_time` TIMESTAMP NOT NULL,
+  UNIQUE (user_nickname),
   UNIQUE INDEX `user_email_UNIQUE` (`user_email` ASC),
   PRIMARY KEY (`user_id`))
 ENGINE = InnoDB;

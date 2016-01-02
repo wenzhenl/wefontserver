@@ -23,9 +23,13 @@ class ViewController: UIViewController {
         
         let params = NSMutableDictionary()
             
-        params["email"] = "liyukuang@gmail.com"
-        params["password"] = "12345"
-        params["nickname"] = "Leeyukuang"
+//        params["email"] = "liyukuang@gmail.com"
+//        params["password"] = "12345"
+//        params["nickname"] = "Leeyukuang"
+        
+        params["email"] = "henrydyc@hotmail.com"
+        params["password"] = "happycoder"
+        params["nickname"] = "henrydyc"
         
         // in case you need time
         params["last_modified_time"] = NSDate().timeIntervalSince1970
