@@ -33,7 +33,7 @@ function connect_AlyssaDB (){
 
 function exec_query($conn, $stmt){
     $result = mysqli_query($conn, $stmt);
-    if (!result) exit_with_error('DB query failed with: '.$stmt);
+    if (!result) exit_with_error('DB operation failed with '.$stmt);
     return $result;
 }
 
