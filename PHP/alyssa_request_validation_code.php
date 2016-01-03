@@ -16,11 +16,12 @@ function send_vc_email($user_email, $vc, &$err_info){
     //send the validation code to email
     $email_subject = "Alyssa Password Reset Validation Code";
     $email_msg = "Dear Alyssa App user:\n\nYour Validation Code is: $vc\n".
-    $email_msg .= "This code expires in 20 minutes, please use it to reset your password as soon as possible.\n\nAlyssa Support Team";
+        'This code expires in 20 minutes, please use it to reset your password '.
+        "as soon as possible.\n\nAlyssa Support Team";
 
     $mail = new PHPMailer;
     $mail->CharSet = 'UTF-8';
-    $mail->SMTPDebug = 2;
+    // $mail->SMTPDebug = 2; //uncomment this line to debug SMTP
 
     //Send mail using gmail
     $send_using_gmail = true;
@@ -72,12 +73,16 @@ $result = exec_query($conn, $stmt);
 if (mysqli_num_rows($result) == 0) {//First time a user tries to reset psw
     $stmt = "SELECT * FROM User WHERE user_email = '$user_email'";
     $result = exec_query($conn, $stmt);
-    if (mysqli_num_rows($result) == 0) exit_with_error('user does not exit with email '.$user_email);
-    $stmt = "INSERT INTO UserValidation (vc_email, validation_code) VALUES ('$user_email', '$vc_encoded')";
+    if (mysqli_num_rows($result) == 0) 
+        exit_with_error('user does not exit with email '.$user_email);
+
+    $stmt = 'INSERT INTO UserValidation (vc_email, validation_code) '.
+        "VALUES ('$user_email', '$vc_encoded')";
     exec_query($conn, $stmt);
 } else {
     //Update validation code
-    $stmt = "Update UserValidation SET validation_code = '$vc_encoded' WHERE vc_email = '$user_email' ";
+    $stmt = "Update UserValidation SET validation_code = '$vc_encoded' ".
+        " WHERE vc_email = '$user_email' ";
     exec_query($conn, $stmt);
 }
 

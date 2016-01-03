@@ -17,14 +17,17 @@ function exit_with_error ($error_msg){
 
 
 function connect_AlyssaDB (){
-    if (!($ini_array = parse_ini_file(".db_config.ini")) ) exit_with_error('Parsing ini file failed');
+    if (!($ini_array = parse_ini_file(".db_config.ini")) ) 
+        exit_with_error('Parsing ini file failed');
 
     $conn =mysqli_connect($ini_array['host'], 
         $ini_array['username'], 
         $ini_array['password'], 
         $ini_array['schema']);
 
-    if (mysqli_connect_errno()) exit_with_error('DB connection error: Error No: '.mysqli_connect_errno());
+    if (mysqli_connect_errno()) 
+        exit_with_error('DB connection error: Error No: '.mysqli_connect_errno());
+
     return $conn;
 }
 
