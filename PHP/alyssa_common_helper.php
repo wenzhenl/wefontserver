@@ -36,4 +36,15 @@ function exec_query($conn, $stmt){
     if (!result) exit_with_error('DB query failed with: '.$stmt);
     return $result;
 }
+
+//Returns true if the current timestamp is within $minutes of the old timestamp
+function timestamp_expired ($old_timestamp, $minutes){
+    $pasttime= strtotime($old_timestamp);
+    $curtime = time();//In seconds since the UNIX epoch
+    if ($curtime - $pasttime > ($minutes * 60))
+        return true;
+    else
+        return false;
+}
+
 ?>
