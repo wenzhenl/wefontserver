@@ -15,9 +15,9 @@ USE `AlyssaDB` ;
 
 CREATE TABLE IF NOT EXISTS `AlyssaDB`.`User` (
   `user_id` INT NOT NULL AUTO_INCREMENT,
-  `user_email` VARCHAR(45) NOT NULL,
+  `user_email` VARCHAR(100) NOT NULL,
   `user_password` VARCHAR(255) NOT NULL,
-  `user_nickname` VARCHAR(45) NOT NULL,
+  `user_nickname` VARCHAR(100) NOT NULL,
   `user_created_time` TIMESTAMP NOT NULL,
   UNIQUE (user_nickname),
   UNIQUE INDEX `user_email_UNIQUE` (`user_email` ASC),
@@ -32,9 +32,9 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `AlyssaDB`.`Font` (
   `font_id` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT NOT NULL,
-  `fontname` VARCHAR(45) NOT NULL,
-  `copyright` VARCHAR(45) NOT NULL,
-  `version` VARCHAR(45) NOT NULL,
+  `fontname` VARCHAR(100) NOT NULL,
+  `copyright` VARCHAR(255) NOT NULL,
+  `version` VARCHAR(100) NOT NULL,
   `font_created_time` TIMESTAMP NOT NULL,
   `font_last_modified_time` TIMESTAMP NOT NULL,
   `font_active` TINYINT(1) NOT NULL,
@@ -54,7 +54,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `AlyssaDB`.`Glyph` (
   `glyph_id` INT NOT NULL AUTO_INCREMENT,
   `font_id` INT NOT NULL,
-  `charname` VARCHAR(45) NOT NULL,
+  `charname` VARCHAR(10) NOT NULL,
   `glyph_created_time` TIMESTAMP NOT NULL,
   `glyph_active` TINYINT(1) NOT NULL,
   PRIMARY KEY (`glyph_id`),
@@ -71,8 +71,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS `AlyssaDB`.`UserValidation` (
-  `vc_email` VARCHAR(45) NOT NULL,
-  `validation_code` TEXT NOT NULL,
+  `vc_email` VARCHAR(100) NOT NULL,
+  `validation_code` VARCHAR(255) NOT NULL,
   `vc_created_time` TIMESTAMP NOT NULL,
   PRIMARY KEY (`vc_email`),
   CONSTRAINT `vc_email`
