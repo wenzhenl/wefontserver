@@ -36,6 +36,8 @@ class ViewController: UIViewController {
         
         let yourIP = "http://52.69.172.155/"
         let api_name = "alyssa_user_signup.php"
+//        let api_name = "alyssa_user_login.php"
+
         Settings.fetchDataFromServer(self, errMsgForNetwork: "cannot access network", destinationURL: yourIP + api_name, params: params, retrivedJSONHandler: handleRetrivedFontData)
     
     }

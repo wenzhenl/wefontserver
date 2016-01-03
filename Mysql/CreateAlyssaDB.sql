@@ -16,7 +16,7 @@ USE `AlyssaDB` ;
 CREATE TABLE IF NOT EXISTS `AlyssaDB`.`User` (
   `user_id` INT NOT NULL AUTO_INCREMENT,
   `user_email` VARCHAR(45) NOT NULL,
-  `user_password` VARCHAR(45) NOT NULL,
+  `user_password` VARCHAR(255) NOT NULL,
   `user_nickname` VARCHAR(45) NOT NULL,
   `user_created_time` TIMESTAMP NOT NULL,
   UNIQUE (user_nickname),
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `AlyssaDB`.`Font` (
   `fontname` VARCHAR(45) NOT NULL,
   `copyright` VARCHAR(45) NOT NULL,
   `version` VARCHAR(45) NOT NULL,
-  `font_created_time` VARCHAR(45) NOT NULL,
+  `font_created_time` TIMESTAMP NOT NULL,
   `font_last_modified_time` TIMESTAMP NOT NULL,
   `font_active` TINYINT(1) NOT NULL,
   PRIMARY KEY (`font_id`),
