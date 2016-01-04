@@ -1,0 +1,3 @@
+[submodule "Alyssa"]
+	path = AlyssaApp
+	url = ../Alyssa
