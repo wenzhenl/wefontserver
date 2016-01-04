@@ -47,4 +47,19 @@ function timestamp_expired ($old_timestamp, $minutes){
         return false;
 }
 
+//Returns the user row if verified OK,
+//Exits with error if not verified.
+function verify_user_password($conn, $user_email, $user_password){
+    $stmt = "SELECT * FROM User WHERE user_email = '$user_email' ";
+    $result = exec_query ($conn, $stmt);
+    if (mysqli_num_rows($result) == 0) 
+        exit_with_error('user email does not exist');
+    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+    if(!password_verify($user_password, $row['user_password'])) 
+        exit_with_error('user password incorrect');
+    return $row;
+}
+
+$g_USER_DATA_PATH = '/home/ubuntu/AlyssaData/Users';
+
 ?>

@@ -9,34 +9,18 @@ function query_num_finished_chars($conn, $font_id){
 
 $json = file_get_contents('php://input');
 $jobj = json_decode($json);
-$user_email = $jobj->email;
-$user_psw   = $jobj->password;
+$conn = connect_AlyssaDB();
+$user_email    = mysqli_real_escape_string($conn, $jobj->email);
+$user_password = mysqli_real_escape_string($conn, $jobj->password);
 
-if (empty($user_email) || empty($user_psw)) 
+if (empty($user_email) || empty($user_password)) 
     exit_with_error('JSON object error');
 
-$conn = connect_AlyssaDB();
-$user_email = mysqli_real_escape_string($conn, $user_email);
-$user_psw   = mysqli_real_escape_string($conn, $user_psw);
-
-$stmt   = 'SELECT user_id, user_nickname, user_password '. 
-    " FROM User WHERE user_email = '$user_email' ";
-$result = exec_query ($conn, $stmt);
-
-if (mysqli_num_rows($result) == 0) 
-    exit_with_error('user email does not exist');
-
-$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-$user_id          = $row['user_id'];
-$user_nickname    = $row['user_nickname'];
-$user_psw_encoded = $row['user_password'];
-
-if(!password_verify($user_psw, $user_psw_encoded)) 
-    exit_with_error('user password incorrect');
-
+$row = verify_user_password($conn, $user_email, $user_password);//returns user row if verified
 $return_data = array("success"=>true, "message" =>'user login successful');
 
 //Login successful, now return the font related info if available
+$user_id = $row['user_id'];
 $stmt = "SELECT font_id, fontname, font_active FROM Font WHERE user_id = '$user_id' ";
 $result = exec_query ($conn, $stmt);
 if (mysqli_num_rows($result) == 0) {
@@ -50,7 +34,7 @@ if (mysqli_num_rows($result) == 0) {
         $fontname    = $row['fontname'];
         $font_active = $row['font_active'];
         if ($font_active == true){
-            $return_data['active'] = $fontname;
+            $return_data['active_font'] = $fontname;
         }
         //Query num of finished chars in each font;
         $num_of_finished_chars = query_num_finished_chars($conn, $font_id);
@@ -59,5 +43,4 @@ if (mysqli_num_rows($result) == 0) {
     }
     echo json_encode($return_data);
 }
-
 ?>

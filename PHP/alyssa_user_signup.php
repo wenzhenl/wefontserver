@@ -34,7 +34,7 @@ $stmt    = "SELECT user_id FROM User WHERE user_email = '$user_email' ";
 $result  = exec_query ($conn, $stmt);
 $row     = mysqli_fetch_array($result, MYSQLI_ASSOC);
 $user_id = $row['user_id'];
-$path    = '/home/ubuntu/AlyssaData/Users/'.$user_id;
+$path    = $g_USER_DATA_PATH.'/'.$user_id;
 
 if (!mkdir($path, 0755, true)){
     exec_query($conn, "DELETE FROM User WHERE user_id = '$user_id'");
