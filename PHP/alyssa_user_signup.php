@@ -18,11 +18,9 @@ $user_email    = mysqli_real_escape_string($conn, $user_email);
 $user_nickname = mysqli_real_escape_string($conn, $user_nickname);
 $user_psw      = mysqli_real_escape_string($conn, $user_psw);
 
-//First check if username exists already
+//First check if user_email exists already
 if (entry_exists($conn, 'User', 'user_email', $user_email)) 
     exit_with_error('user email exists already');
-if (entry_exists($conn, 'User', 'user_nickname', $user_nickname)) 
-    exit_with_error('user nickname exists already');
 
 $user_psw_encoded = password_hash($user_psw, PASSWORD_DEFAULT);
 $stmt = 'INSERT INTO User (user_email, user_password, user_nickname) Values '.

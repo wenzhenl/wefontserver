@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `AlyssaDB`.`User` (
   `user_password` VARCHAR(255) NOT NULL,
   `user_nickname` VARCHAR(100) NOT NULL,
   `user_created_time` TIMESTAMP NOT NULL,
-  UNIQUE (user_nickname),
+  UNIQUE (user_email),
   UNIQUE INDEX `user_email_UNIQUE` (`user_email` ASC),
   PRIMARY KEY (`user_id`))
 ENGINE = InnoDB;
@@ -35,8 +35,8 @@ CREATE TABLE IF NOT EXISTS `AlyssaDB`.`Font` (
   `fontname` VARCHAR(100) NOT NULL,
   `copyright` VARCHAR(255) NOT NULL,
   `version` VARCHAR(100) NOT NULL,
-  `font_created_time` TIMESTAMP NOT NULL,
-  `font_last_modified_time` TIMESTAMP NOT NULL,
+  `font_created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `font_last_modified_time` TIMESTAMP NOT NULL ,
   `font_active` TINYINT(1) NOT NULL,
   PRIMARY KEY (`font_id`),
   CONSTRAINT `user_id`
