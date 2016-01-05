@@ -4,9 +4,10 @@
 
 require_once('alyssa_common_helper.php');
 
+$conn = connect_AlyssaDB();
+
 $json = file_get_contents('php://input');
 $jobj = json_decode($json);
-$conn = connect_AlyssaDB();
 $user_email    = mysqli_real_escape_string($conn, $jobj->email);
 $user_password = mysqli_real_escape_string($conn, $jobj->password);
 $user_fontname = mysqli_real_escape_string($conn, $jobj->fontname);

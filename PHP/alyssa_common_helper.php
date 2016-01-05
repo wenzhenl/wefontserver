@@ -15,6 +15,11 @@ function exit_with_error ($error_msg){
     exit();
 }
 
+function rollback_and_exit($conn, $msg){
+    mysqli_rollback($conn);
+    exit_with_error($msg); 
+}
+
 
 function connect_AlyssaDB (){
     if (!($ini_array = parse_ini_file(".db_config.ini")) ) 
@@ -60,6 +65,8 @@ function verify_user_password($conn, $user_email, $user_password){
     return $row;
 }
 
-$g_USER_DATA_PATH = '/home/ubuntu/AlyssaData/Users';
-
+//Constants
+define("ALYSSA_DATA_PATH", "/home/ubuntu/AlyssaData");
+define("ALYSSA_USER_PATH", "/home/ubuntu/AlyssaData/Users");
+define("ALYSSA_BOOK_PATH", "/home/ubuntu/AlyssaData/Books");
 ?>

@@ -1,22 +1,17 @@
 <?php
 require_once('alyssa_common_helper.php');
 
-$json = file_get_contents('php://input');
-$jobj = json_decode($json);
-$user_email    = $jobj->email;
-$user_psw      = $jobj->password;
-$user_nickname = $jobj->nickname;
-
-//Check JSON error
-if (empty($user_email) || empty($user_psw) || empty($user_nickname) ) 
-    exit_with_error('JSON object error');
-
-//Connects to mysql DB, exits if failed
 $conn = connect_AlyssaDB();
 
-$user_email    = mysqli_real_escape_string($conn, $user_email);
-$user_nickname = mysqli_real_escape_string($conn, $user_nickname);
-$user_psw      = mysqli_real_escape_string($conn, $user_psw);
+$json = file_get_contents('php://input');
+$jobj = json_decode($json);
+
+$user_email    = mysqli_real_escape_string($conn, $jobj->email);
+$user_psw      = mysqli_real_escape_string($conn, $jobj->password);
+$user_nickname = mysqli_real_escape_string($conn, $jobj->nickname);
+
+if (empty($user_email) || empty($user_psw) || empty($user_nickname) ) 
+    exit_with_error('JSON object error');
 
 //First check if user_email exists already
 if (entry_exists($conn, 'User', 'user_email', $user_email)) 
@@ -32,7 +27,7 @@ $stmt    = "SELECT user_id FROM User WHERE user_email = '$user_email' ";
 $result  = exec_query ($conn, $stmt);
 $row     = mysqli_fetch_array($result, MYSQLI_ASSOC);
 $user_id = $row['user_id'];
-$path    = $g_USER_DATA_PATH.'/'.$user_id;
+$path    = ALYSSA_USER_PATH.'/'.$user_id;
 
 if (!mkdir($path, 0755, true)){
     exec_query($conn, "DELETE FROM User WHERE user_id = '$user_id'");
@@ -41,5 +36,4 @@ if (!mkdir($path, 0755, true)){
 
 $return_data = array("success"=>true, "message" =>'user data created successfully');
 echo json_encode($return_data);
-
 ?>

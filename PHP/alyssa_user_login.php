@@ -7,9 +7,10 @@ function query_num_finished_chars($conn, $font_id){
     return mysqli_num_rows($result);
 }
 
+$conn = connect_AlyssaDB();
+
 $json = file_get_contents('php://input');
 $jobj = json_decode($json);
-$conn = connect_AlyssaDB();
 $user_email    = mysqli_real_escape_string($conn, $jobj->email);
 $user_password = mysqli_real_escape_string($conn, $jobj->password);
 
@@ -17,10 +18,11 @@ if (empty($user_email) || empty($user_password))
     exit_with_error('JSON object error');
 
 $row = verify_user_password($conn, $user_email, $user_password);//returns user row if verified
-$return_data = array("success"=>true, "message" =>'user login successful');
-
-//Login successful, now return the font related info if available
 $user_id = $row['user_id'];
+$user_nickname = $row['user_nickname'];
+
+$return_data = array("success"=>true, "message" =>'user login successful', "nickname" => "$user_nickname");
+
 $stmt = "SELECT font_id, fontname, font_active FROM Font WHERE user_id = '$user_id' ";
 $result = exec_query ($conn, $stmt);
 if (mysqli_num_rows($result) == 0) {

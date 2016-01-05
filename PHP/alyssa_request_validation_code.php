@@ -53,16 +53,12 @@ function send_vc_email($user_email, $vc, &$err_info){
 
 //*************** PHP script starts here ************
 
+$conn = connect_AlyssaDB();
+
 $json = file_get_contents('php://input');
 $jobj = json_decode($json);
-$user_email = $jobj->email;
-
-//Check JSON error
+$user_email = mysqli_real_escape_string($conn, $jobj->email);
 if (empty($user_email)) exit_with_error('JSON object error');
-
-//Connects to mysql DB, exits if failed
-$conn = connect_AlyssaDB();
-$user_email = mysqli_real_escape_string($conn, $user_email);
 
 //Validation code is 6-digit random number
 $vc = randString(6, '0123456789');

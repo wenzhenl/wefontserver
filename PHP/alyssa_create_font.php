@@ -25,9 +25,11 @@ function exec_query_and_create_dir($conn, $user_id, $user_fontname, $base_path){
     }
 }
 
+
+$conn = connect_AlyssaDB();
+
 $json = file_get_contents('php://input');
 $jobj = json_decode($json);
-$conn = connect_AlyssaDB();
 $user_email    = mysqli_real_escape_string($conn, $jobj->email);
 $user_password = mysqli_real_escape_string($conn, $jobj->password);
 $user_fontname = mysqli_real_escape_string($conn, $jobj->fontname);
@@ -55,7 +57,7 @@ if (mysqli_num_rows($result) == 0){
     //Add new font
     $stmt = "INSERT INTO Font VALUES (NULL, '$user_id', '$user_fontname', '$copyright', '$version', NULL, NOW(), TRUE) ";
     if(mysqli_query($conn, $stmt)) {
-        exec_query_and_create_dir($conn, $user_id, $user_fontname, $g_USER_DATA_PATH);
+        exec_query_and_create_dir($conn, $user_id, $user_fontname, ALYSSA_USER_PATH);
     } else {
         mysqli_rollback($conn); 
         exit_with_error('DB operation error, font not updated'); 
@@ -81,7 +83,7 @@ if (mysqli_num_rows($result) == 0){
     if(!mysqli_query($conn, $stmt1)) $transaction_ok = false;
     if(!mysqli_query($conn, $stmt2)) $transaction_ok = false;
     if($transaction_ok) {
-        exec_query_and_create_dir($conn, $user_id, $user_fontname, $g_USER_DATA_PATH);
+        exec_query_and_create_dir($conn, $user_id, $user_fontname, ALYSSA_USER_PATH);
     } else {
         mysqli_rollback($conn); 
         exit_with_error('DB operation error, font not updated'); 

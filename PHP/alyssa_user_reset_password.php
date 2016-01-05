@@ -1,21 +1,16 @@
 <?php
 require_once('alyssa_common_helper.php');
 
+$conn = connect_AlyssaDB();
+
 $json = file_get_contents('php://input');
 $jobj = json_decode($json);
-$user_email   = $jobj->email;
-$user_vc      = $jobj->validation_code;
-$new_password = $jobj->new_password;
+$user_email   = mysqli_real_escape_string($conn, $jobj->email);
+$user_vc      = mysqli_real_escape_string($conn, $jobj->validation_code);
+$new_password = mysqli_real_escape_string($conn, $jobj->new_password);
 
-//Check JSON error
 if (empty($user_email) || empty($user_vc) || empty($new_password)) 
     exit_with_error('JSON object error');
-
-//Connects to mysql DB, exits if failed
-$conn = connect_AlyssaDB();
-$user_email   = mysqli_real_escape_string($conn, $user_email);
-$user_vc      = mysqli_real_escape_string($conn, $user_vc);
-$new_password = mysqli_real_escape_string($conn, $new_password);
 
 $stmt   = 'SELECT validation_code, vc_created_time '. 
     " FROM UserValidation WHERE vc_email = '$user_email' ";
