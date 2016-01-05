@@ -48,9 +48,11 @@ mysqli_autocommit($conn, false);
 $stmt1 = "UPDATE Font SET font_last_modified_time = NOW() WHERE font_id = '$user_font_id' ";
 
 //Step 2: Insert new glyph info into DB and update activeness
-$stmt2 = "UPDATE Glyph SET glyph_active = FALSE WHERE charname = '$user_charname' ";
+$stmt2 = "UPDATE Glyph SET glyph_active = FALSE WHERE font_id = '$user_font_id' ".
+    "AND charname = '$user_charname' AND glyph_active IS TRUE";
 $stmt3 = "INSERT INTO Glyph VALUES (NULL, '$user_font_id', '$user_charname', NULL, TRUE)";
-$stmt4 = "SELECT glyph_id FROM Glyph WHERE font_id = '$user_font_id' AND charname = '$user_charname'";
+$stmt4 = "SELECT glyph_id FROM Glyph WHERE font_id = '$user_font_id' ".
+    " AND charname = '$user_charname' AND glyph_active IS TRUE";
 
 if(!mysqli_query($conn, $stmt1)) rollback_and_exit($conn, 'DB op failure: unable to update font last modified time');
 if(!mysqli_query($conn, $stmt2)) rollback_and_exit($conn, 'DB op failure: unable to update glyph activeness');

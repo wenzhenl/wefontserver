@@ -54,7 +54,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `AlyssaDB`.`Glyph` (
   `glyph_id` INT NOT NULL AUTO_INCREMENT,
   `font_id` INT NOT NULL,
-  `charname` VARCHAR(10) NOT NULL,
+  `charname` VARCHAR(1) NOT NULL,
   `glyph_created_time` TIMESTAMP NOT NULL,
   `glyph_active` TINYINT(1) NOT NULL,
   PRIMARY KEY (`glyph_id`),
