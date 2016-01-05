@@ -83,7 +83,7 @@ if (mysqli_num_rows($result) == 0){//User has no font at all
 
     //Check if fontname exists already
     $stmt = "SELECT * FROM Font WHERE user_id = '$user_id' AND fontname = '$user_fontname'";
-    $result = mysqli_query($conn, $stmt); //contains all fonts of this user
+    $result = mysqli_query($conn, $stmt);
     if(!$result) rollback_and_exit($conn, 'DB op failure: SELECT');
     if(mysqli_num_rows($result) != 0) rollback_and_exit($conn, 'same fontname already exists');
 
