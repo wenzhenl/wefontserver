@@ -11,7 +11,7 @@ $jobj = json_decode($json);
 $user_email    = mysqli_real_escape_string($conn, $jobj->email);
 $user_password = mysqli_real_escape_string($conn, $jobj->password);
 $user_fontname = mysqli_real_escape_string($conn, $jobj->fontname);
-if (empty($user_email) || empty($user_password) || empty(user_fontname)) 
+if (empty($user_email) || empty($user_password) || empty($user_fontname)) 
     exit_with_error('JSON object error');
 
 $row = verify_user_password($conn, $user_email, $user_password);
@@ -48,7 +48,7 @@ $mail->Body       = $email_msg;
 $mail->isHTML(false);
 $mail->setFrom('alyssaappteam@gmail.com', 'Alyssa Support Team');
 $mail->addAddress($user_email);
-$mail->AddAttachment($fontfile_path, $fontname.'.ttf');
+$mail->AddAttachment($fontfile_path, $user_fontname.'.ttf');
 
 if(!$mail->send()){
     exit_with_error('failed to send email: '.$mail->ErrorInfo);
