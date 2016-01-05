@@ -57,7 +57,6 @@ CREATE TABLE IF NOT EXISTS `AlyssaDB`.`Glyph` (
   `charname` VARCHAR(10) NOT NULL,
   `glyph_created_time` TIMESTAMP NOT NULL,
   `glyph_active` TINYINT(1) NOT NULL,
-  UNIQUE INDEX `charname_UNIQUE` (`charname` ASC),
   PRIMARY KEY (`glyph_id`),
   CONSTRAINT `font_id`
     FOREIGN KEY (`font_id`)
