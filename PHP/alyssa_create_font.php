@@ -6,7 +6,10 @@ require_once('alyssa_common_helper.php');
 //Returns false otherwise
 function create_font_file($font_path, $fontname, $copyright, $version){
     $font_fname = $font_path.'/alyssafont.ttf';
+    $output = shell_exec(ALYSSA_SCRIPT_PATH."/initializeFontFile.sh \"$font_fname\"  \"$fontname\" \"$copyright\" \"$version\"");
 
+    if(is_null($output)) return false;
+    else return true;
 }
 
 /*Performs 3 tasks
