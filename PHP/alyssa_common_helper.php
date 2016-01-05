@@ -69,4 +69,5 @@ function verify_user_password($conn, $user_email, $user_password){
 define("ALYSSA_DATA_PATH", "/home/ubuntu/AlyssaData");
 define("ALYSSA_USER_PATH", "/home/ubuntu/AlyssaData/Users");
 define("ALYSSA_BOOK_PATH", "/home/ubuntu/AlyssaData/Books");
+define("ALYSSA_DEFAULT_FONTFILE", "alyssafont.ttf");
 ?>

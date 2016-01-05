@@ -29,7 +29,7 @@ $row     = mysqli_fetch_array($result, MYSQLI_ASSOC);
 $user_id = $row['user_id'];
 $path    = ALYSSA_USER_PATH.'/'.$user_id;
 
-if (!mkdir($path, 0755, true)){
+if (!mkdir($path, 0777, true)){
     exec_query($conn, "DELETE FROM User WHERE user_id = '$user_id'");
     exit_with_error('Failed to create directory at path : '.$path);
 }

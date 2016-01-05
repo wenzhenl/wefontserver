@@ -62,7 +62,7 @@ if(!($stmt4_result = mysqli_query($conn, $stmt4)) ) rollback_and_exit($conn, 'DB
 $user_glyph_id = mysqli_fetch_array($stmt4_result, MYSQLI_ASSOC)['glyph_id'];
 if ($user_image->content_type != "image/jpeg") exit_with_error('not a JPEG image');
 $image_path = ALYSSA_USER_PATH.'/'.$user_id.'/'.$user_font_id.'/'.$user_glyph_id.'.jpeg';
-$font_path  = ALYSSA_USER_PATH.'/'.$user_id.'/alyssafont.ttf';
+$font_path  = ALYSSA_USER_PATH.'/'.$user_id.'/'.ALYSSA_DEFAULT_FONTFILE;
 $user_image_data = base64_decode( str_replace(' ', '+', $user_image->file_data) );
 
 if(!file_put_contents($path, $user_image_data)) rollback_and_exit($conn, 'failed to write glyph image at path '.$path);

@@ -15,7 +15,7 @@ function exec_query_and_create_dir($conn, $user_id, $user_fontname, $base_path){
 
     //Create directory with font_id under user_id
     $path = $base_path.'/'.$user_id.'/'.$user_font_id;
-    if (mkdir($path, 0755, true)){
+    if (mkdir($path, 0777, true)){
         mysqli_commit($conn);
         $return_data = array("success"=>true, "message" =>'font updated successfully');
         echo json_encode($return_data);

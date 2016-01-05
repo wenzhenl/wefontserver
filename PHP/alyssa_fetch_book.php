@@ -11,10 +11,10 @@ if(empty($book_title)) exit_with_error('JSON object error');
 
 $book_path = ALYSSA_BOOK_PATH.'/'.$book_title.'.txt';
 
-if(!($book_content = file_get_contents($book_path))){
+if(!($book_data = file_get_contents($book_path))){
     exit_with_error('fails to load book at path '.$book_path);
 } else {
-    $return_data = array("success"=>true, "message" =>'book fetched successfully', "book_title"=>$book_title, "book"=>base64_encode($book_content));
+    $return_data = array("success"=>true, "message" =>'book fetched successfully', "book_title"=>$book_title, "book"=>base64_encode($book_data));
     echo json_encode($return_data);
 }
 
