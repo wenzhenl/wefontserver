@@ -69,8 +69,10 @@ if(!file_put_contents($path, $user_image_data)) rollback_and_exit($conn, 'failed
 
 //TODO:
 //Step 4: Update font file on disk
+$output = shell_exec("/home/ubuntu/AlyssaData/scripts/addCharImageIntoFont.sh $user_charname $image_path $font_path");
 
 //If something goes wrong, rollback transaction and call exit_with_error()
+if(is_null($output)) exit_with_error("cannot add glyph into font");
 
 //If everything is OK so far
 mysqli_commit($conn);
