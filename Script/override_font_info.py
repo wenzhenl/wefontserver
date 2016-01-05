@@ -27,9 +27,11 @@ args = parser.parse_args()
 
 font = fontforge.open(args.fontpath)
 
+font.fontname = args.name
 font.familyname = args.name
 font.fullname = args.name
-font.copyright = "copyright Leeyukuag"
+font.copyright = "Copyright(c) " + args.copyright
+print font.copyright
 font.version = args.version
 
 dirname = os.path.dirname(args.fontpath)
@@ -37,4 +39,4 @@ temp_font_name = '/'.join((dirname, "temporaryFont.ttf"))
 print temp_font_name
 
 font.generate(temp_font_name)
-os.rename(temp_font_name, args.fontpath)
+# os.rename(temp_font_name, args.fontpath)
