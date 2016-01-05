@@ -1,30 +1,51 @@
 <?php
 require_once('alyssa_common_helper.php');
 
-//Performs the DB operation and mkdir in a single transaction
-function exec_query_and_create_dir($conn, $user_id, $user_fontname, $base_path){
-    //Obtain the user_font_id
-    $stmt = "SELECT font_id FROM Font WHERE user_id = '$user_id' AND fontname = '$user_fontname' ";
-    $result = mysqli_query($conn, $stmt);
-    if(!$result) {
-        mysqli_rollback($conn);
-        exit_with_error('fails to insert font into DB, font not updated'); 
-    }
-    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);//row has the active font
-    $user_font_id = $row['font_id'];
+//Creates the .ttf font file under $font_path
+//Returns true if this operation is sucessful
+//Returns false otherwise
+function create_font_file($font_path, $fontname, $copyright, $version){
+    $font_fname = $font_path.'/alyssafont.ttf';
 
-    //Create directory with font_id under user_id
-    $path = $base_path.'/'.$user_id.'/'.$user_font_id;
-    if (mkdir($path, 0777, true)){
-        mysqli_commit($conn);
-        $return_data = array("success"=>true, "message" =>'font updated successfully');
-        echo json_encode($return_data);
+}
+
+/*Performs 3 tasks
+ * 1. Insert new font into DB
+ * 2. Create font directory
+ * 3. Create font file (.ttf)
+ * Returns true if all operations are successful
+ * Rolls back DB and terminates script if anything goes wrong
+ */
+function add_new_font($conn, $user_id, $fontname, $copyright, $version, $base_path) {
+    $stmt = "INSERT INTO Font VALUES (NULL, '$user_id', '$fontname', '$copyright', '$version', NULL, NOW(), TRUE) ";
+    if(mysqli_query($conn, $stmt)) {
+        $stmt = "SELECT * FROM Font WHERE user_id = '$user_id' AND fontname = '$fontname' ";
+        if(!($result = mysqli_query($conn, $stmt))) 
+            rollback_and_exit($conn, 'DB op failure: SELECT');
+
+        $font_row  = mysqli_fetch_array($result, MYSQLI_ASSOC);
+        $font_id   = $font_row['font_id'];
+        $copyright = $font_row['copyright'];
+        $version   = $font_row['version'];
+
+        $font_path = $base_path.'/'.$user_id.'/'.$font_id;
+        if(mkdir($font_path, 0777, true)) { //create font dir
+            $err_msg = '';
+            if (create_font_file($font_path, $fontname, $copyright, $version)){
+               return true; 
+            } else {
+                rollback_and_exit($conn, 'failed to create the font fail'); 
+            } 
+        }else{
+            rollback_and_exit($conn, 'failed to create the font directory'); 
+        }
     } else {
-        mysqli_rollback($conn);
-        exit_with_error('fails to create font directory, font not updated'); 
+        rollback_and_exit($conn, 'DB op failure: cannot insert font');
     }
 }
 
+
+/**************** Script Starts Here **************/
 
 $conn = connect_AlyssaDB();
 
@@ -47,49 +68,37 @@ $result = exec_query ($conn, $stmt); //contains all fonts of this user
 
 
 /* This single TRANSACTION performs:
- * 1. Insert new font and Update activeness of corresponding fonts 
- * 2. Create new font folder on disk
+ * 1. Inactivate previous active font 
+ * 2. Insert new font into DB
+ * 3. Create font dir AND font file for the new font
  * */
 mysqli_autocommit($conn, false);
 $transaction_ok = true;
 
-if (mysqli_num_rows($result) == 0){
-    //Add new font
-    $stmt = "INSERT INTO Font VALUES (NULL, '$user_id', '$user_fontname', '$copyright', '$version', NULL, NOW(), TRUE) ";
-    if(mysqli_query($conn, $stmt)) {
-        exec_query_and_create_dir($conn, $user_id, $user_fontname, ALYSSA_USER_PATH);
-    } else {
-        mysqli_rollback($conn); 
-        exit_with_error('DB operation error, font not updated'); 
-    }
+if (mysqli_num_rows($result) == 0){//User has no font at all
 
-} else {
-    //Check existing font for duplication and update activeness
-    $active_font_id ='';
-    while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
-        $font_id     = $row['font_id'];
-        $fontname    = $row['fontname'];
-        $font_active = $row['font_active'];
-        if (strcmp($fontname, $user_fontname) == 0) 
-            exit_with_error('same fontname already exists');
-        if ($font_active == true){
-            $active_font_id = $font_id;
-        }
-    }
+    add_new_font($conn, $user_id, $user_fontname, $copyright, $version, ALYSSA_USER_PATH);
 
-    //Insert and update activeness MUST be in a single TRANSACTION
-    $stmt1 = "INSERT INTO Font VALUES (NULL, '$user_id', '$user_fontname', '$copyright', '$version', NULL, NOW(), TRUE) ";
-    $stmt2 = "UPDATE Font SET font_active = FALSE WHERE font_id = '$active_font_id' ";
-    if(!mysqli_query($conn, $stmt1)) $transaction_ok = false;
-    if(!mysqli_query($conn, $stmt2)) $transaction_ok = false;
-    if($transaction_ok) {
-        exec_query_and_create_dir($conn, $user_id, $user_fontname, ALYSSA_USER_PATH);
-    } else {
-        mysqli_rollback($conn); 
-        exit_with_error('DB operation error, font not updated'); 
-    }
+} else {//User has some font under his account
+
+    //Check if fontname exists already
+    $stmt = "SELECT * FROM Font WHERE user_id = '$user_id' AND fontname = '$user_fontname'";
+    $result = mysqli_query($conn, $stmt); //contains all fonts of this user
+    if(!$result) rollback_and_exit($conn, 'DB op failure: SELECT');
+    if(mysqli_num_rows($result) != 0) rollback_and_exit($conn, 'same fontname already exists');
+
+    //Inactivate previous active font
+    $stmt  = 'UPDATE Font SET font_active = FALSE WHERE '.
+        "user_id = '$user_id' AND font_active IS TRUE";
+    if(!mysqli_query($conn, $stmt)) rollback_and_exit($conn, 'DB op failure: UDATE');
+
+    add_new_font($conn, $user_id, $user_fontname, $copyright, $version, ALYSSA_USER_PATH);
 } 
 
-mysqli_close($conn);
+//Finally, everything is OK, commit the DB operations and return
+mysqli_commit($conn);
+
+$return_data = array("success"=>true, "message" =>'font updated successfully');
+echo json_encode($return_data);
 
 ?>
