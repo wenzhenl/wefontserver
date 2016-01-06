@@ -5,8 +5,8 @@ $conn = connect_AlyssaDB();
 
 $json = file_get_contents('php://input');
 $jobj = json_decode($json);
-$user_email = mysqli_real_escape_string($conn, $jobj->email);
-$user_vc    = mysqli_real_escape_string($conn, $jobj->validation_code);
+$user_email = mysqli_real_escape_string($conn, trim($jobj->email));
+$user_vc    = mysqli_real_escape_string($conn, trim($jobj->validation_code));
 
 if (empty($user_email) || empty($user_vc)) 
     exit_with_error('JSON object error');

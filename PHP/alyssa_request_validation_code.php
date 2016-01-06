@@ -57,7 +57,7 @@ $conn = connect_AlyssaDB();
 
 $json = file_get_contents('php://input');
 $jobj = json_decode($json);
-$user_email = mysqli_real_escape_string($conn, $jobj->email);
+$user_email = mysqli_real_escape_string($conn, trim($jobj->email));
 if (empty($user_email)) exit_with_error('JSON object error');
 
 //Validation code is 6-digit random number

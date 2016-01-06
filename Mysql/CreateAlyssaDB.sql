@@ -16,13 +16,15 @@ USE `AlyssaDB` ;
 CREATE TABLE IF NOT EXISTS `AlyssaDB`.`User` (
   `user_id` INT NOT NULL AUTO_INCREMENT,
   `user_email` VARCHAR(100) NOT NULL,
-  `user_password` VARCHAR(255) NOT NULL,
+  `user_password` VARCHAR(100) NOT NULL,
   `user_nickname` VARCHAR(100) NOT NULL,
   `user_created_time` TIMESTAMP NOT NULL,
   UNIQUE (user_email),
   UNIQUE INDEX `user_email_UNIQUE` (`user_email` ASC),
   PRIMARY KEY (`user_id`))
-ENGINE = InnoDB;
+ENGINE = InnoDB
+CHARACTER SET utf8
+COLLATE utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
@@ -44,7 +46,9 @@ CREATE TABLE IF NOT EXISTS `AlyssaDB`.`Font` (
     REFERENCES `AlyssaDB`.`User` (`user_id`)
     ON DELETE NO ACTION
     ON UPDATE CASCADE)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+CHARACTER SET utf8
+COLLATE utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
@@ -63,7 +67,9 @@ CREATE TABLE IF NOT EXISTS `AlyssaDB`.`Glyph` (
     REFERENCES `AlyssaDB`.`Font` (`font_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+CHARACTER SET utf8
+COLLATE utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
@@ -80,4 +86,6 @@ CREATE TABLE IF NOT EXISTS `AlyssaDB`.`UserValidation` (
     REFERENCES `AlyssaDB`.`User` (`user_email`)
     ON DELETE NO ACTION
     ON UPDATE CASCADE)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+CHARACTER SET utf8
+COLLATE utf8_unicode_ci;

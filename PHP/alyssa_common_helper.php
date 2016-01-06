@@ -33,12 +33,15 @@ function connect_AlyssaDB (){
     if (mysqli_connect_errno()) 
         exit_with_error('DB connection error: Error No: '.mysqli_connect_errno());
 
+    if(!mysqli_set_charset($conn, "utf8"))
+        exit_with_error('Unable to set charset = utf8 on DB connection');
+
     return $conn;
 }
 
 function exec_query($conn, $stmt){
     $result = mysqli_query($conn, $stmt);
-    if (!result) exit_with_error('DB operation failed with '.$stmt);
+    if (!$result) exit_with_error('DB operation failed with '.$stmt);
     return $result;
 }
 
