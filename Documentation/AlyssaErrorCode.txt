@@ -1,0 +1,79 @@
+General Error 
+0001 : parsing DB ini file failed 
+0002 : mysqli DB connection error
+0003 : unable to set charset = utf8 on DB connection
+0004 : failed to execute DB query 
+0005 : user email not exist
+0006 : user password incorrect
+0007 : DB data inconsistent
+
+API 1
+alyssa_user_signup.php
+0101 : JSON object error
+0102 : user email exists already
+0103 : mkdir error
+
+API 2
+alyssa_user_login.php
+0201 : JSON object error
+
+API 3
+alyssa_request_validation_code.php
+0301 : JSON object error
+0302 : provided email not found in DB
+0303 : failed to send vc to user email
+
+API 4
+alyssa_request_validation_code.php
+0401 : JSON object error
+0402 : provided email not found in DB
+0403 : validation code incorrect
+0404 : validation code expired
+
+API 5
+alyssa_user_reset_password.php
+0501 : JSON object error
+0502 : provided email not found in DB
+0503 : validation code incorrect
+0504 : validation code expired
+
+API 6
+alyssa_create_font.php
+0601 : JSON object error
+0602 : same fontname already exists
+0603 : failed to create the font file
+0604 : failed to create the font directory
+
+API 7
+alyssa_create_glyph.php
+0701 : JSON object error
+0702 : fontname not found or is inactive
+0703 : glyph image is not a JPEG image 
+0704 : failed to write glyph image to disk
+0705 : fails to add glyph into font
+
+API 8
+alyssa_fetch_latest_font.php
+0801 : JSON object error
+0802 : fontname not found
+0803 : failed to load font from disk
+
+API 9
+alyssa_email_font.php
+0901 : JSON object error
+0902 : fontname not found
+0903 : failed to sent font to user email
+
+API 10
+alyssa_switch_active_font.php
+1001 : JSON object error
+1002 : fontname not found
+
+API 11
+alyssa_update_user_email.php
+
+API 12
+alyssa_fetch_book.php
+1201 : JSON object error
+1202 : fails to load book from disk 
+

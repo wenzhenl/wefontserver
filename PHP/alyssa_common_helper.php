@@ -23,7 +23,7 @@ function rollback_and_exit($conn, $msg){
 
 function connect_AlyssaDB (){
     if (!($ini_array = parse_ini_file(".db_config.ini")) ) 
-        exit_with_error('Parsing ini file failed');
+        exit_with_error('0001');
 
     $conn =mysqli_connect($ini_array['host'], 
         $ini_array['username'], 
@@ -31,17 +31,17 @@ function connect_AlyssaDB (){
         $ini_array['schema']);
 
     if (mysqli_connect_errno()) 
-        exit_with_error('DB connection error: Error No: '.mysqli_connect_errno());
+        exit_with_error('0002');
 
     if(!mysqli_set_charset($conn, "utf8"))
-        exit_with_error('Unable to set charset = utf8 on DB connection');
+        exit_with_error('0003');
 
     return $conn;
 }
 
 function exec_query($conn, $stmt){
     $result = mysqli_query($conn, $stmt);
-    if (!$result) exit_with_error('DB operation failed with '.$stmt);
+    if (!$result) exit_with_error(QUERY_EXEC_ERROR);
     return $result;
 }
 
@@ -61,10 +61,10 @@ function verify_user_password($conn, $user_email, $user_password){
     $stmt = "SELECT * FROM User WHERE user_email = '$user_email' ";
     $result = exec_query ($conn, $stmt);
     if (mysqli_num_rows($result) == 0) 
-        exit_with_error('user email does not exist');
+        exit_with_error('0005');
     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
     if(!password_verify($user_password, $row['user_password'])) 
-        exit_with_error('user password incorrect');
+        exit_with_error('0006');
     return $row;
 }
 
@@ -74,4 +74,6 @@ define("ALYSSA_USER_PATH", "/home/ubuntu/AlyssaData/Users");
 define("ALYSSA_BOOK_PATH", "/home/ubuntu/AlyssaData/Books");
 define("ALYSSA_SCRIPT_PATH", "/home/ubuntu/AlyssaData/Scripts");
 define("ALYSSA_DEFAULT_FONTFILE", "alyssafont.ttf");
+define("QUERY_EXEC_ERROR", "0004"); //0004 is the err code
+define("DB_DATA_ERROR", "0007");//DB data is inconsistent 
 ?>

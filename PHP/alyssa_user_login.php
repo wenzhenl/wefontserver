@@ -15,7 +15,7 @@ $user_email    = mysqli_real_escape_string($conn, trim($jobj->email));
 $user_password = mysqli_real_escape_string($conn, trim($jobj->password));
 
 if (empty($user_email) || empty($user_password)) 
-    exit_with_error('JSON object error');
+    exit_with_error('0201');
 
 $row = verify_user_password($conn, $user_email, $user_password);//returns user row if verified
 $user_id = $row['user_id'];

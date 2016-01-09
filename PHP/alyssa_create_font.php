@@ -24,7 +24,7 @@ function add_new_font($conn, $user_id, $fontname, $copyright, $version, $base_pa
     if(mysqli_query($conn, $stmt)) {
         $stmt = "SELECT * FROM Font WHERE user_id = '$user_id' AND fontname = '$fontname' ";
         if(!($result = mysqli_query($conn, $stmt))) 
-            rollback_and_exit($conn, 'DB op failure: SELECT');
+            rollback_and_exit($conn, QUERY_EXEC_ERROR);
 
         $font_row  = mysqli_fetch_array($result, MYSQLI_ASSOC);
         $font_id   = $font_row['font_id'];
@@ -37,13 +37,13 @@ function add_new_font($conn, $user_id, $fontname, $copyright, $version, $base_pa
             if (create_font_file($font_path, $fontname, $copyright, $version)){
                return true; 
             } else {
-                rollback_and_exit($conn, 'failed to create the font fail'); 
+                rollback_and_exit($conn, '0603'); 
             } 
         }else{
-            rollback_and_exit($conn, 'failed to create the font directory'); 
+            rollback_and_exit($conn, '0604'); 
         }
     } else {
-        rollback_and_exit($conn, 'DB op failure: cannot insert font');
+        rollback_and_exit($conn, QUERY_EXEC_ERROR);
     }
 }
 
@@ -61,7 +61,7 @@ $copyright     = mysqli_real_escape_string($conn, trim($jobj->copyright));
 $version       = mysqli_real_escape_string($conn, trim($jobj->version));
 
 if (empty($user_email) || empty($user_password) || empty($user_fontname) || empty($copyright) || empty($version) )
-    exit_with_error('JSON object error');    
+    exit_with_error('0601');    
 
 $row     = verify_user_password($conn, $user_email, $user_password);
 $user_id = $row['user_id'];
@@ -87,13 +87,13 @@ if (mysqli_num_rows($result) == 0){//User has no font at all
     //Check if fontname exists already
     $stmt = "SELECT * FROM Font WHERE user_id = '$user_id' AND fontname = '$user_fontname'";
     $result = mysqli_query($conn, $stmt);
-    if(!$result) rollback_and_exit($conn, 'DB op failure: SELECT');
-    if(mysqli_num_rows($result) != 0) rollback_and_exit($conn, 'same fontname already exists');
+    if(!$result) rollback_and_exit($conn, QUERY_EXEC_ERROR);
+    if(mysqli_num_rows($result) != 0) rollback_and_exit($conn, '0602');
 
     //Inactivate previous active font
     $stmt  = 'UPDATE Font SET font_active = FALSE WHERE '.
         "user_id = '$user_id' AND font_active IS TRUE";
-    if(!mysqli_query($conn, $stmt)) rollback_and_exit($conn, 'DB op failure: UDATE');
+    if(!mysqli_query($conn, $stmt)) rollback_and_exit($conn, QUERY_EXEC_ERROR);
 
     add_new_font($conn, $user_id, $user_fontname, $copyright, $version, ALYSSA_USER_PATH);
 } 

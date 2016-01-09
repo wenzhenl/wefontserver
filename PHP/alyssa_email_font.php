@@ -12,7 +12,7 @@ $user_email    = mysqli_real_escape_string($conn, trim($jobj->email));
 $user_password = mysqli_real_escape_string($conn, trim($jobj->password));
 $user_fontname = mysqli_real_escape_string($conn, trim($jobj->fontname));
 if (empty($user_email) || empty($user_password) || empty($user_fontname)) 
-    exit_with_error('JSON object error');
+    exit_with_error('0901');
 
 $row = verify_user_password($conn, $user_email, $user_password);
 $user_id = $row['user_id'];
@@ -21,8 +21,8 @@ $user_id = $row['user_id'];
 /***************** Prepare Fontfile to Send ****************/
 $stmt = "SELECT * FROM Font WHERE user_id = '$user_id' AND fontname = '$user_fontname'";
 $result = mysqli_query($conn, $stmt);
-if(!$result) exit_with_error('DB op failure: SELECT');
-if(mysqli_num_rows($result) == 0) exit_with_error('requested font not found');
+if(!$result) exit_with_error(QUERY_EXEC_ERROR);
+if(mysqli_num_rows($result) == 0) exit_with_error('0902');
 $font_id = mysqli_fetch_array($result, MYSQLI_ASSOC)['font_id'];
 $fontfile_path = ALYSSA_USER_PATH.'/'.$user_id.'/'.$font_id.'/'.ALYSSA_DEFAULT_FONTFILE;
 
@@ -51,7 +51,7 @@ $mail->addAddress($user_email);
 $mail->AddAttachment($fontfile_path, $user_fontname.'.ttf');
 
 if(!$mail->send()){
-    exit_with_error('failed to send email: '.$mail->ErrorInfo);
+    exit_with_error('0903');
 } else {
     $return_data = array("success"=>true, "message" =>'font file sent to'.$user_email);
     echo json_encode($return_data);

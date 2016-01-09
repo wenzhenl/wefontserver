@@ -11,11 +11,11 @@ $user_psw      = mysqli_real_escape_string($conn, trim($jobj->password));
 $user_nickname = mysqli_real_escape_string($conn, trim($jobj->nickname));
 
 if (empty($user_email) || empty($user_psw) || empty($user_nickname) ) 
-    exit_with_error('JSON object error');
+    exit_with_error('0101');
 
 //First check if user_email exists already
 if (entry_exists($conn, 'User', 'user_email', $user_email)) 
-    exit_with_error('user email exists already');
+    exit_with_error('0102');
 
 $user_psw_encoded = password_hash($user_psw, PASSWORD_DEFAULT);
 $stmt = 'INSERT INTO User (user_email, user_password, user_nickname) Values '.
@@ -31,7 +31,7 @@ $path    = ALYSSA_USER_PATH.'/'.$user_id;
 
 if (!mkdir($path, 0777, true)){
     exec_query($conn, "DELETE FROM User WHERE user_id = '$user_id'");
-    exit_with_error('Failed to create directory at path : '.$path);
+    exit_with_error('0103');
 }
 
 $return_data = array("success"=>true, "message" =>'user data created successfully');

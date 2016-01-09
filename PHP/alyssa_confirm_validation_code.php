@@ -9,25 +9,25 @@ $user_email = mysqli_real_escape_string($conn, trim($jobj->email));
 $user_vc    = mysqli_real_escape_string($conn, trim($jobj->validation_code));
 
 if (empty($user_email) || empty($user_vc)) 
-    exit_with_error('JSON object error');
+    exit_with_error('0401');
 
 $stmt   = 'SELECT validation_code, vc_created_time '. 
     " FROM UserValidation WHERE vc_email = '$user_email' ";
 $result = exec_query ($conn, $stmt);
 
 if (mysqli_num_rows($result) == 0) 
-    exit_with_error('user email does not exist');
+    exit_with_error('0402');
 
 $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 $vc_encoded = $row['validation_code'];
 $vc_created_time = $row['vc_created_time'];
 
 if(!password_verify($user_vc, $vc_encoded)) 
-    exit_with_error('validation code incorrect');
+    exit_with_error('0403');
 
 $minutes = 20;
 if(timestamp_expired($vc_created_time, $minutes))
-    exit_with_error('validation code expired');
+    exit_with_error('0404');
 
 $return_data = array("success"=>true, "message" =>'validation successful');
 echo json_encode($return_data);

@@ -58,7 +58,7 @@ $conn = connect_AlyssaDB();
 $json = file_get_contents('php://input');
 $jobj = json_decode($json);
 $user_email = mysqli_real_escape_string($conn, trim($jobj->email));
-if (empty($user_email)) exit_with_error('JSON object error');
+if (empty($user_email)) exit_with_error('0301');
 
 //Validation code is 6-digit random number
 $vc = randString(6, '0123456789');
@@ -70,7 +70,7 @@ if (mysqli_num_rows($result) == 0) {//First time a user tries to reset psw
     $stmt = "SELECT * FROM User WHERE user_email = '$user_email'";
     $result = exec_query($conn, $stmt);
     if (mysqli_num_rows($result) == 0) 
-        exit_with_error('user does not exit with email '.$user_email);
+        exit_with_error('0302');
 
     $stmt = 'INSERT INTO UserValidation (vc_email, validation_code) '.
         "VALUES ('$user_email', '$vc_encoded')";
@@ -87,7 +87,7 @@ if (send_vc_email($user_email, $vc, $err_info)){
     $return_data = array("success"=>true, "message" =>'user validation code sent to '.$user_email);
     echo json_encode($return_data);
 } else {
-    exit_with_error('failed to send vc to user email '.$user_email.' ErrorInfo: '.$err_info);
+    exit_with_error('0303');
 }
 
 ?>
