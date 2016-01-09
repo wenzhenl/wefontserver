@@ -5,7 +5,7 @@ $conn = connect_AlyssaDB();
 
 $json = file_get_contents('php://input');
 $jobj = json_decode($json);
-$book_title = mysqli_real_escape_string(trim($jobj->book_title));
+$book_title = mysqli_real_escape_string($conn, trim($jobj->book_title));
 
 if(empty($book_title)) exit_with_error('1201');
 
