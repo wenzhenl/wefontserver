@@ -5,7 +5,7 @@ $conn = connect_AlyssaDB();
 
 $json = file_get_contents('php://input');
 $jobj = json_decode($json);
-$user_email   = mysqli_real_escape_string($conn, trim($jobj->email);
+$user_email   = mysqli_real_escape_string($conn, trim($jobj->email));
 $user_vc      = mysqli_real_escape_string($conn, trim($jobj->validation_code));
 $new_password = mysqli_real_escape_string($conn, trim($jobj->new_password));
 
