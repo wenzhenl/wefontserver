@@ -16,7 +16,7 @@ USE `AlyssaDB` ;
 CREATE TABLE IF NOT EXISTS `AlyssaDB`.`User` (
   `user_id` INT NOT NULL AUTO_INCREMENT,
   `user_email` VARCHAR(100) NOT NULL,
-  `user_password` VARCHAR(100) NOT NULL,
+  `user_password` VARCHAR(255) NOT NULL,
   `user_nickname` VARCHAR(100) NOT NULL,
   `user_created_time` TIMESTAMP NOT NULL,
   UNIQUE (user_email),
