@@ -30,9 +30,8 @@ $fontfile_path = ALYSSA_USER_PATH.'/'.$user_id.'/'.$font_id.'/'.ALYSSA_DEFAULT_F
 $mail = new PHPMailer;
 $mail->CharSet = 'UTF-8';
 
-$email_subject = "Alyssa Font";
-$email_msg = "Dear Alyssa App user:\n\nWe have sent you the font file in the email attachment.\n".
-    "Please download the file and enjoy!\n\nAlyssa Support Team";
+$email_subject = "美字精灵APP字体发送";
+$email_msg = "亲爱的用户:\n\n您的个性化定制字体已发送，请下载本邮件附件\n\n美字精灵APP";
 
 //Send mail using gmail as the SMTP server
 $mail->IsSMTP();

@@ -14,10 +14,10 @@ function randString($length, $charset='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmno
 
 function send_vc_email($user_email, $vc, &$err_info){
     //send the validation code to email
-    $email_subject = "Alyssa Password Reset Validation Code";
-    $email_msg = "Dear Alyssa App user:\n\nYour Validation Code is: $vc\n".
-        'This code expires in 20 minutes, please use it to reset your password '.
-        "as soon as possible.\n\nAlyssa Support Team";
+    $email_subject = "美字精灵APP验证码";
+    $email_msg = "亲爱的用户:\n\n您的验证码是： $vc\n".
+        '此验证码将会在20分钟内失效, 请尽快使用'.
+        "\n\n美字精灵APP";
 
     $mail = new PHPMailer;
     $mail->CharSet = 'UTF-8';
@@ -37,7 +37,7 @@ function send_vc_email($user_email, $vc, &$err_info){
         $mail->Password = 'alyssa2016ok'; // GMAIL password
     }
 
-    $mail->setFrom('alyssaappteam@gmail.com', 'Alyssa Support Team');
+    $mail->setFrom('alyssaappteam@gmail.com', '美字精灵APP');
     $mail->addAddress($user_email);
     $mail->isHTML(false);
     $mail->Subject = $email_subject;
